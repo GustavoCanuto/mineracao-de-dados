@@ -1,0 +1,61 @@
+<?php
+
+ session_start();
+ if (!isset($_SESSION['logado'])) {
+     header("Location: ../index.html");
+     exit();
+ }
+
+
+include '../calculo_grafico/calc_graf_fumante.php';
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gorjeta por Fumante</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Total de Gorjetas por Fumante</h2>
+    <canvas id="grafico"></canvas>
+
+    <script>
+        const ctx = document.getElementById('grafico').getContext('2d');
+        const grafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode(array_keys($gorjetas_fumante)); ?>,
+                datasets: [{
+                    label: 'Gorjeta Total (R$)',
+                    data: <?php echo json_encode(array_values($gorjetas_fumante)); ?>,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Fumante (S ou N)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Gorjeta Total (R$)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <br>
+    <a href="../menu.php">Voltar ao Menu</a> |  
+    <a href="../sair.php">Sair</a>
+</body>
+</html>

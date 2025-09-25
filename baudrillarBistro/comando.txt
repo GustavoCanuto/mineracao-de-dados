@@ -1,0 +1,1 @@
+(head -n 1 go.csv && tail -n +2 go.csv | sort -t, -k1,1n) > go2.csv
